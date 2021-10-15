@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Parametro;
 use Carbon\Carbon;
 
 function hola(){
@@ -203,7 +204,43 @@ function verSweetAlert2($mensaje, $type = 'success', $title = '¡Éxito!', $toas
 
 }
 
+//Dias activo en Store Hours
+function showActive($dia)
+{
+    $hoy = date('D');
+    if ($hoy == $dia) {
+        return "show active";
+    } else {
+        return '';
+    }
+}
+//Estado de Tienda Abierto o Cerrada
+function storeHours()
+{
+    $status = true;
+    $horarios = Parametro::where('nombre', 'horarios')->first();
+    if ($horarios && $horarios->valor == 1){
+        $dia = date('D');
+        $open = Parametro::where('nombre', $dia."_open")->first();
+        $closed = Parametro::where('nombre', $dia."_closed")->first();
+        if ($open->valor && $closed->valor){
+            $status = hourIsBetween($open->valor, $closed->valor, date('H:i'));
+        }else{
+            $status = false;
+        }
+    }
 
+    $anulazion_forzada = Parametro::where('nombre', 'anulazion_forzada')->first();
+    if ($anulazion_forzada && $anulazion_forzada->tabla_id == 1){
+        if ($anulazion_forzada->valor == 1){
+            $status = true;
+        }else{
+            $status = false;
+        }
+    }
+
+    return $status;
+}
 
 
 

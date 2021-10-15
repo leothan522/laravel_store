@@ -1,3 +1,8 @@
+<button data-toggle="modal" data-target="#modal-lg" class="btn btn-info btn-sm">
+    <i class="fas fa-edit"></i>
+</button>
+
+
 <div wire:ignore.self class="modal fade" id="modal-lg">
     <div class="modal-dialog modal-lg">
         <div class="modal-content fondo">

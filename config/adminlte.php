@@ -247,7 +247,7 @@ return [
             'can'       => 'usuarios',
             'submenu' => [
                 [
-                    'text' => 'Stores',
+                    'text' => 'Store',
                     'icon' => 'fas fa-fw fa-store',
                     'route' => 'stores.index',
                     'can' => 'stores'

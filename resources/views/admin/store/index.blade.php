@@ -11,8 +11,8 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Dashboard v2</li>
+                    {{--<li class="breadcrumb-item"><a href="#">Home</a></li>--}}
+                    <li class="breadcrumb-item active">Tiendas Registradas</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -21,10 +21,7 @@
 @endsection
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
-    <p>{{ hola() }}</p>
-    <p>
-        <button onclick="Swal.fire('Any fool can use a computer')">hola</button></p>
+    @livewire('store-component')
 @endsection
 
 @section('footer')
@@ -32,11 +29,21 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+    {{--<link rel="stylesheet" href="/css/admin_custom.css">--}}
 @endsection
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script>
+        function cambiarLogo(){
+            var pdrs = document.getElementById('customFileLangLogo').files[0].name;
+            document.getElementById('infoLogo').innerHTML = pdrs;
+        }
+        function cambiarImagen(){
+            var pdrs = document.getElementById('customFileLangImagen').files[0].name;
+            document.getElementById('infoImagen').innerHTML = pdrs;
+        }
+        console.log('Hi!');
+    </script>
 @endsection
 
 @section('plugins.Sweetalert2', true)
