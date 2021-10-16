@@ -236,4 +236,8 @@ return [
 
     ],
 
+    //VARIABLES DE ENTORNO PROPIAS
+
+    'type' => env('APP_TYPE', 'local'),
+
 ];

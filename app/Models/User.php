@@ -70,7 +70,8 @@ class User extends Authenticatable
     {
         //return 'https://ui-avatars.com/api/?name='.auth()->user()->name;
         //return asset('img/user.png');
-        return auth()->user()->profile_photo_url;
+        //return auth()->user()->profile_photo_url;
+        return verImagen(auth()->user()->profile_photo_path, auth()->user()->name);
     }
 
     public function adminlte_desc()

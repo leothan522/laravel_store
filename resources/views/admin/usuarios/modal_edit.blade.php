@@ -29,7 +29,7 @@
                             <div class="card card-primary card-outline">
                                 <div class="card-body box-profile">
                                     <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle" src="{{ auth()->user()->profile_photo_url /*asset('img/user.png')*/ }}" alt="User profile picture">
+                                        <img class="profile-user-img img-fluid img-circle" src="{{ verImagen($user_path, $user_name) }}" alt="User profile picture">
                                     </div>
 
                                     <h3 class="profile-username text-center">{{ ucwords($user_name) }}</h3>
@@ -64,9 +64,9 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 @if ($user_estatus)
-                                                    <button type="button" wire:click="cambiarEstatus({{ $user_id }})" class="btn btn-danger btn-block"><b>Suspender <br> Usuario</b></button>
+                                                    <button type="button" wire:click="cambiarEstatus({{ $user_id }})" class="btn btn-danger btn-block"><b>Suspender Usuario</b></button>
                                                 @else
-                                                    <button type="button" wire:click="cambiarEstatus({{ $user_id }})" class="btn btn-success btn-block"><b>Activar <br> Usuario</b></button>
+                                                    <button type="button" wire:click="cambiarEstatus({{ $user_id }})" class="btn btn-success btn-block"><b>Activar Usuario</b></button>
                                                 @endif
                                             </div>
                                             <div class="col-md-6">
