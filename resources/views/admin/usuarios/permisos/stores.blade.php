@@ -13,7 +13,7 @@
 
         <ul class="list-group text-sm">
             <li class="list-group-item">
-                Ver Stores
+                Ver Tiendas
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
                     <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'stores.index')"
                            @if(leerJson($user_permisos, 'stores.index')) checked @endif
@@ -21,8 +21,8 @@
                     <label class="custom-control-label" for="customSwitch0store"></label>
                 </div>
             </li>
-            {{--<li class="list-group-item">
-                Crear stores
+            <li class="list-group-item">
+                Crear Tiendas
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
                     <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'stores.create')"
                            @if(leerJson($user_permisos, 'stores.create')) checked @endif
@@ -31,23 +31,42 @@
                 </div>
             </li>
             <li class="list-group-item">
-                Editar stores
+                Editar Tiendas
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
                     <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'stores.edit')"
                            @if(leerJson($user_permisos, 'stores.edit')) checked @endif
+                           class="custom-control-input" id="customSwitch3store">
+                    <label class="custom-control-label" for="customSwitch3store"></label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                Eliminar Tiendas
+                <div class="custom-control custom-switch custom-switch-on-success float-right">
+                    <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'stores.destroy')"
+                           @if(leerJson($user_permisos, 'stores.destroy')) checked @endif
+                           class="custom-control-input" id="customSwitch6store">
+                    <label class="custom-control-label" for="customSwitch6store"></label>
+                </div>
+            </li>
+            <li class="list-group-item">
+                Definir Horario
+                <div class="custom-control custom-switch custom-switch-on-success float-right">
+                    <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'stores.horario')"
+                           @if(leerJson($user_permisos, 'stores.horario')) checked @endif
                            class="custom-control-input" id="customSwitch2store">
                     <label class="custom-control-label" for="customSwitch2store"></label>
                 </div>
             </li>
             <li class="list-group-item">
-                Reestablecer Contraseña
+                Cambiar Default
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
-                    <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'stores.update')"
-                           @if(leerJson($user_permisos, 'stores.update')) checked @endif
-                           class="custom-control-input" id="customSwitch3store">
-                    <label class="custom-control-label" for="customSwitch3store"></label>
+                    <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'stores.default')"
+                           @if(leerJson($user_permisos, 'stores.default')) checked @endif
+                           class="custom-control-input" id="customSwitchnstore">
+                    <label class="custom-control-label" for="customSwitchnstore"></label>
                 </div>
             </li>
+            {{--
             <li class="list-group-item">
                 Permisos de Usuario
                 <div class="custom-control custom-switch custom-switch-on-success float-right">
@@ -66,15 +85,7 @@
                     <label class="custom-control-label" for="customSwitch5store"></label>
                 </div>
             </li>
-            <li class="list-group-item">
-                Eliminar stores
-                <div class="custom-control custom-switch custom-switch-on-success float-right">
-                    <input type="checkbox" wire:click="update_permisos({{ $user_id }}, 'stores.destroy')"
-                           @if(leerJson($user_permisos, 'stores.destroy')) checked @endif
-                           class="custom-control-input" id="customSwitch6store">
-                    <label class="custom-control-label" for="customSwitch6store"></label>
-                </div>
-            </li>--}}
+            --}}
         </ul>
 
     </div>

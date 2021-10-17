@@ -126,19 +126,6 @@ function obtenerPorcentaje($cantidad, $total)
     return 0;
 }
 
-//Función comprueba una hora entre un rango
-function hourIsBetween($from, $to, $input) {
-    $dateFrom = DateTime::createFromFormat('!H:i', $from);
-    $dateTo = DateTime::createFromFormat('!H:i', $to);
-    $dateInput = DateTime::createFromFormat('!H:i', $input);
-    if ($dateFrom > $dateTo) $dateTo->modify('+1 day');
-    return ($dateFrom <= $dateInput && $dateInput <= $dateTo) || ($dateFrom <= $dateInput->modify('+1 day') && $dateInput <= $dateTo);
-    /*En la función lo que haremos será pasarle, el desde y el hasta del rango de horas que queremos que se encuentre y el datetime con la hora que nos llega.
-Comprobaremos si la segunda hora que le pasamos es inferior a la primera, con lo cual entenderemos que es para el día siguiente.
-Y al final devolveremos true o false dependiendo si el valor introducido se encuentra entre lo que le hemos pasado.*/
-}
-
-
 //Alertas de sweetAlert2
 function verSweetAlert2($mensaje, $type = 'success', $title = '¡Éxito!', $toast_icono = 'success', $html_icono = '<i class="fa fa-trash-alt"></i>', $html_color = 'error')
 {
@@ -214,32 +201,86 @@ function showActive($dia)
         return '';
     }
 }
+
+//Función comprueba una hora entre un rango
+function hourIsBetween($from, $to, $input) {
+    $dateFrom = DateTime::createFromFormat('!H:i', $from);
+    $dateTo = DateTime::createFromFormat('!H:i', $to);
+    $dateInput = DateTime::createFromFormat('!H:i', $input);
+    if ($dateFrom > $dateTo) $dateTo->modify('+1 day');
+    return ($dateFrom <= $dateInput && $dateInput <= $dateTo) || ($dateFrom <= $dateInput->modify('+1 day') && $dateInput <= $dateTo);
+    /*En la función lo que haremos será pasarle, el desde y el hasta del rango de horas que queremos que se encuentre y el datetime con la hora que nos llega.
+Comprobaremos si la segunda hora que le pasamos es inferior a la primera, con lo cual entenderemos que es para el día siguiente.
+Y al final devolveremos true o false dependiendo si el valor introducido se encuentra entre lo que le hemos pasado.*/
+}
+
+
 //Estado de Tienda Abierto o Cerrada
-function storeHours()
+function storeHours($store_id = null)
 {
+    $store = null;
     $status = true;
+
+    if (is_null($store_id)){
+        $store_default = Parametro::where('nombre', 'store_default')->first();
+        if ($store_default){
+            $store = $store_default->tabla_id;
+        }else{
+            return false;
+        }
+
+        $store_status = Parametro::where('nombre', 'store_status')->where('tabla_id', $store)->first();
+        if ($store_status && $store_status->valor == 0){
+            return false;
+        }
+    }else{
+        if (!storeEstatus($store_id)){
+            return false;
+        }
+    }
+
     $horarios = Parametro::where('nombre', 'horarios')->first();
     if ($horarios && $horarios->valor == 1){
         $dia = date('D');
         $open = Parametro::where('nombre', $dia."_open")->first();
         $closed = Parametro::where('nombre', $dia."_closed")->first();
-        if ($open->valor && $closed->valor){
+        if ($open && $closed){
             $status = hourIsBetween($open->valor, $closed->valor, date('H:i'));
         }else{
-            $status = false;
+            $status = true;
         }
+    }else{
+        $status = true;
     }
 
-    $anulazion_forzada = Parametro::where('nombre', 'anulazion_forzada')->first();
-    if ($anulazion_forzada && $anulazion_forzada->tabla_id == 1){
-        if ($anulazion_forzada->valor == 1){
-            $status = true;
-        }else{
-            $status = false;
-        }
-    }
+    /*$anulazion_forzada = Parametro::where('nombre', 'anulazion_forzada')->first();
+    if ($anulazion_forzada && $anulazion_forzada->valor == 1){
+        $status = false;
+    }else{
+        $status = true;
+    }*/
 
     return $status;
+}
+
+function storeEstatus($store_id)
+{
+    $store = Parametro::where('nombre', 'store_status')->where('tabla_id', $store_id)->first();
+    if ($store){
+        return $store->valor;
+    }else{
+        return 1;
+    }
+}
+
+function storeDefault($store_id)
+{
+    $store = Parametro::where('nombre', 'store_default')->where('tabla_id', $store_id)->first();
+    if ($store){
+        return '<i class="fas fa-certificate text-muted text-xs"></i>';
+    }else{
+        return false;
+    }
 }
 
 

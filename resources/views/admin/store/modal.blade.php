@@ -22,11 +22,22 @@
             </div>
             <div class="modal-footer justify-content-end">
                 @if($view == 'show')
+                    @if(leerJson(Auth::user()->permisos, 'stores.default') || Auth::user()->role == 100)
+                        @if(!storeDefault($store_id))
+                            <button type="button" class="btn btn-default btn-sm" wire:click="storeDefault({{ $store_id }})"><i class="fas fa-certificate"></i> Convertir en Default</button>
+                        @endif
+                    @endif
+                    @if(leerJson(Auth::user()->permisos, 'stores.destroy') || Auth::user()->role == 100)
+                        <button type="button" class="btn btn-default btn-sm" wire:click="destroy({{ $store_id }})" data-dismiss="modal"><i class="fas fa-trash-alt"></i> Borrar Tienda</button>
+                    @endif
                     <button type="button" class="btn btn-default btn-sm" wire:click="images()"><i class="fas fa-image"></i> Cambiar Imagenes</button>
-                    <button type="button" class="btn btn-default btn-sm" wire:click="edit()"><i class="fas fa-edit"></i> {{ __('Edit') }} Información</button>
-                    @else
+                    @if(leerJson(Auth::user()->permisos, 'stores.edit') || Auth::user()->role == 100)
+                        <button type="button" class="btn btn-default btn-sm" wire:click="edit()"><i class="fas fa-edit"></i> {{ __('Edit') }} Información</button>
+                    @endif
+
+                @else
                     @if($view != 'create')
-                        <button type="button" class="btn btn-danger btn-sm" wire:click="show()"><i class="fas fa-edit"></i> {{ __('Cancel') }}</button>
+                        <button type="button" class="btn btn-danger btn-sm" wire:click="show({{ $store_id }})"><i class="fas fa-edit"></i> {{ __('Cancel') }}</button>
                     @endif
                 @endif
                 <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">{{ __('Close') }}</button>

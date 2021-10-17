@@ -10,27 +10,27 @@
                              alt="User profile picture">
                     </div>
 
-                    <h3 class="profile-username text-center">{{--{{ ucwords($user_name) }}--}}.</h3>
+                    <h3 class="profile-username text-center">{{ ucwords($nombre_tienda) }}</h3>
 
                     <ul class="list-group list-group-unbordered mb-3">
                         <li class="list-group-item">
-                            <b>RIF</b> <a class="float-right">{{--{{ $user_email }}--}}</a>
+                            <b>RIF</b> <a class="float-right">{{ strtoupper($rif_tienda) }}</a>
                         </li>
                         <li class="list-group-item">
                             <b>Jefe de Tienda</b> <a
-                                class="float-right">{{--@if($user_role){{ role($user_role) }}@else {{ role(0) }}@endif--}}</a>
+                                class="float-right">{{ ucwords($jefe_tienda) }}</a>
                         </li>
                         <li class="list-group-item">
                             <b>Telefonos</b> <a
-                                class="float-right text-danger">{{--@if($user_estatus) {!! estatusUsuario($user_estatus) !!} @else {!! estatusUsuario(0)  !!} @endif--}}</a>
+                                class="float-right text-danger">{{ $telefonos_tienda }}</a>
                         </li>
                         <li class="list-group-item">
                             <b>Email</b> <a
-                                class="float-right">{{--@if($user_fecha) {{ haceCuanto($user_fecha) }} @endif--}}</a>
+                                class="float-right">{{ strtolower($email_tienda) }}</a>
                         </li>
                         <li class="list-group-item">
                             <b>Dirección</b> <a
-                                class="float-right">{{--@if($user_fecha) {{ haceCuanto($user_fecha) }} @endif--}}</a>
+                                class="float-right">{{ strtolower($direccion_tienda) }}</a>
                         </li>
                     </ul>
 

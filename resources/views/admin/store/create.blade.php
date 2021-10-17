@@ -1,5 +1,7 @@
+{!! Form::open(['wire:submit.prevent' => "store"]) !!}
 <div class="row justify-content-center">
-    <div class="row col-md-11">
+
+    <div class="row col-md-11 justify-content-center">
 
         <div class="col-md-6">
 
@@ -12,15 +14,11 @@
                 </div>
                 <div class="card-body">
 
-                    {!! Form::open(['wire:submit.prevent' => "update(1)"]) !!}
-                    @if (/*$user->plataforma == 0*/true)
-
-
                         <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input type="file" name="imagen" class="custom-file-input" id="customFileLangLogo" onchange='cambiarLogo()' lang="es" accept="image/jpeg, image/png">
+                                <input type="file" name="logo_tienda" class="custom-file-input" id="customFileLangLogo" onchange='cambiarLogo()' lang="es" accept="image/jpeg, image/png">
                                 <label class="custom-file-label" for="customFileLang" data-browse="Elegir" id="infoLogo">Logo</label>
-                                @error('nombre_tienda')
+                                @error('logo_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                                     <i class="icon fas fa-exclamation-triangle"></i>
                                                     {{ $message }}
@@ -31,9 +29,9 @@
 
                         <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input type="file" name="imagen" class="custom-file-input" id="customFileLangImagen" onchange='cambiarImagen()' lang="es" accept="image/jpeg, image/png">
+                                <input type="file" name="imagen_tienda" class="custom-file-input" id="customFileLangImagen" onchange='cambiarImagen()' lang="es" accept="image/jpeg, image/png">
                                 <label class="custom-file-label" for="customFileLang" data-browse="Elegir" id="infoImagen">Imagen</label>
-                                @error('nombre_tienda')
+                                @error('imagen_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                     <i class="icon fas fa-exclamation-triangle"></i>
                                     {{ $message }}
@@ -41,12 +39,6 @@
                                 @enderror
                             </div>
                         </div>
-
-
-                    @endif
-
-
-                    {!! Form::close() !!}
 
                 </div>
             </div>
@@ -63,15 +55,13 @@
                 </div>
                 <div class="card-body">
 
-                    {!! Form::open(['wire:submit.prevent' => "update(1)"]) !!}
-                    @if (/*$user->plataforma == 0*/true)
                         <div class="form-group">
                             <label for="name">{{ __('Name') }}</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-store"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="nombre_tienda" placeholder="Nombre de Tienda">
+                                <input type="text" class="form-control" name="nombre_tienda" wire:model.debounce.10000000ms="nombre_tienda" placeholder="Nombre de Tienda">
                                 @error('nombre_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                                     <i class="icon fas fa-exclamation-triangle"></i>
@@ -86,7 +76,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-id-card"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="rif_tienda" placeholder="RIF de Tienda">
+                                <input type="text" class="form-control" name="rif_tienda" wire:model.debounce.10000000ms="rif_tienda" placeholder="RIF de Tienda">
                                 @error('rif_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                                     <i class="icon fas fa-exclamation-triangle"></i>
@@ -101,7 +91,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="jefe_tienda" placeholder="Jefe de Tienda">
+                                <input type="text" class="form-control" name="jefe_tienda" wire:model.debounce.10000000ms="jefe_tienda" placeholder="Jefe de Tienda">
                                 @error('jefe_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                                     <i class="icon fas fa-exclamation-triangle"></i>
@@ -117,7 +107,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="telefonos_tienda" placeholder="Telefonos de Tienda">
+                                <input type="text" class="form-control" name="telefonos_tienda" wire:model.debounce.10000000ms="telefonos_tienda" placeholder="Telefonos de Tienda">
                                 @error('telefonos_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                                     <i class="icon fas fa-exclamation-triangle"></i>
@@ -133,7 +123,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="email_tienda" placeholder="Email de Tienda">
+                                <input type="text" class="form-control" name="email_tienda" wire:model.debounce.10000000ms="email_tienda" placeholder="Email de Tienda">
                                 @error('email_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                                     <i class="icon fas fa-exclamation-triangle"></i>
@@ -149,7 +139,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-directions"></i></span>
                                 </div>
-                                <input type="text" class="form-control" name="direccion_tienda" placeholder="Direccion de Tienda">
+                                <input type="text" class="form-control" name="direccion_tienda" wire:model.debounce.10000000ms="direccion_tienda" placeholder="Direccion de Tienda">
                                 @error('direccion_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
                                                     <i class="icon fas fa-exclamation-triangle"></i>
@@ -159,27 +149,20 @@
                             </div>
                         </div>
 
-                    @endif
+
 
                     <div class="form-group text-right">
-                        <input type="hidden" name="mod" value="datos">
-                        @if (/*$user->role != 100 || Auth::user()->role == 100*/ true)
-                            @if (/*$user->status != 0*/true)
-                                <input type="submit" class="btn btn-block btn-success"
-                                       value="Crear Tienda">
-                            @else
-                                <input type="button" class="btn btn-block btn-success disabled"
-                                       value="Crear Tienda">
-                            @endif
-                        @endif
-
+                        <input type="submit" class="btn btn-block btn-success" value="Crear Tienda">
                     </div>
 
-                    {!! Form::close() !!}
+
 
                 </div>
             </div>
         </div>
 
     </div>
+
+
 </div>
+{!! Form::close() !!}

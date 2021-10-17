@@ -10,6 +10,13 @@
             <div class="modal-body">
 
 
+                <div wire:loading>
+                    <div class="overlay">
+                        <i class="fas fa-2x fa-sync-alt"></i>
+                    </div>
+                </div>
+
+
                <div class="row">
                    <div class="col-md-4">
                         @include('admin.usuarios.permisos.usuarios')

@@ -1,3 +1,4 @@
+{!! Form::open(['wire:submit.prevent' => 'storeHorarios']) !!}
 <div class="form-group">
 
     <ul class="nav nav-tabs" id="custom-tabs-three-tab" role="tablist">
@@ -48,7 +49,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="lunes_open" value="{{--{{ $lunes_open }}--}}">
+                            <input type="time" name="lunes_open" wire:model.debounce.1000000ms="lunes_open" value="{{ $lunes_open }}">
                         </div>
                     </div>
                 </div>
@@ -59,7 +60,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="lunes_closed" value="{{--{{ $lunes_closed }}--}}">
+                            <input type="time" name="lunes_closed" wire:model.debounce.1000000ms="lunes_closed" value="{{ $lunes_closed }}">
                         </div>
                     </div>
                 </div>
@@ -75,7 +76,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="martes_open" value="{{--{{ $martes_open }}--}}">
+                            <input type="time" name="martes_open" wire:model.debounce.1000000ms="martes_open" value="{{ $martes_open }}">
                         </div>
                     </div>
                 </div>
@@ -86,7 +87,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="martes_closed" value="{{--{{ $martes_closed }}--}}">
+                            <input type="time" name="martes_closed" wire:model.debounce.1000000ms="martes_closed" value="{{ $martes_closed }}">
                         </div>
                     </div>
                 </div>
@@ -102,7 +103,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="miercoles_open" value="{{--{{ $miercoles_open }}--}}">
+                            <input type="time" name="miercoles_open" wire:model.debounce.1000000ms="miercoles_open" value="{{ $miercoles_open }}">
                         </div>
                     </div>
                 </div>
@@ -113,7 +114,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="miercoles_closed" value="{{--{{ $miercoles_closed }}--}}">
+                            <input type="time" name="miercoles_closed" wire:model.debounce.1000000ms="miercoles_closed" value="{{ $miercoles_closed }}">
                         </div>
                     </div>
                 </div>
@@ -129,7 +130,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="jueves_open" value="{{--{{ $jueves_open }}--}}">
+                            <input type="time" name="jueves_open" wire:model.debounce.1000000ms="jueves_open" value="{{ $jueves_open }}">
                         </div>
                     </div>
                 </div>
@@ -140,7 +141,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="jueves_closed" value="{{--{{ $jueves_closed }}--}}">
+                            <input type="time" name="jueves_closed" wire:model.debounce.1000000ms="jueves_closed" value="{{ $jueves_closed }}">
                         </div>
                     </div>
                 </div>
@@ -156,7 +157,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="viernes_open" value="{{--{{ $viernes_open }}--}}">
+                            <input type="time" name="viernes_open" wire:model.debounce.1000000ms="viernes_open" value="{{ $viernes_open }}">
                         </div>
                     </div>
                 </div>
@@ -167,7 +168,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="viernes_closed" value="{{--{{ $viernes_closed }}--}}">
+                            <input type="time" name="viernes_closed" wire:model.debounce.1000000ms="viernes_closed" value="{{ $viernes_closed }}">
                         </div>
                     </div>
                 </div>
@@ -183,7 +184,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="sabado_open" value="{{--{{ $sabado_open }}--}}">
+                            <input type="time" name="sabado_open" wire:model.debounce.1000000ms="sabado_open" value="{{ $sabado_open }}">
                         </div>
                     </div>
                 </div>
@@ -194,7 +195,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="sabado_closed" value="{{--{{ $sabado_closed }}--}}">
+                            <input type="time" name="sabado_closed" wire:model.debounce.1000000ms="sabado_closed" value="{{ $sabado_closed }}">
                         </div>
                     </div>
                 </div>
@@ -210,7 +211,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="domingo_open" value="{{--{{ $domingo_open }}--}}">
+                            <input type="time" name="domingo_open" wire:model.debounce.1000000ms="domingo_open" value="{{ $domingo_open }}">
                         </div>
                     </div>
                 </div>
@@ -221,7 +222,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-clock"></i></span>
                             </div>
-                            <input type="time" name="domingo_closed" value="{{--{{ $domingo_closed }}--}}">
+                            <input type="time" name="domingo_closed" wire:model.debounce.1000000ms="domingo_closed" value="{{ $domingo_closed }}">
                         </div>
                     </div>
                 </div>
@@ -233,11 +234,19 @@
 
 </div>
 
+@if(leerJson(Auth::user()->permisos, 'stores.horario') || Auth::user()->role == 100)
+<div class="form-group text-right">
+    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
+</div>
+@endif
+
+{!! Form::close() !!}
+
 <div class="alert @if(storeHours()) alert-success @else alert-danger @endif {{--alert-dismissible--}}">
     @if (storeHours())
         <h5><i class="icon fas fa-check"></i> ¡Abierto!</h5>
     @else
         <h5><i class="icon fas fa-lock"></i> ¡Cerrado!</h5>
     @endif
-    {{--Dia: {{ date('D') }}.--}}Hora actual: <strong>{{ date('h:i a') }}</strong>. Status: <strong>@if(storeHours()) OPEN @else CLOSED @endif</strong>
+    {{--Dia: {{ date('D') }}--}} Hora actual: <strong>{{ date('h:i a') }}</strong>. Status: <strong>@if(storeHours()) OPEN @else CLOSED @endif</strong>
 </div>
