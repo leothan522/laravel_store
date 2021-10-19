@@ -429,8 +429,20 @@ class StoreComponent extends Component
             'Imagenes Actualizadas'
         );
 
+    }
 
+    public function storeDivisa($id, $valor)
+    {
+        if ($valor == 1){
+            $this->parametros('store_divisas', 0, $id);
+        }else{
+            $this->parametros('store_divisas', 1, $id);
+        }
 
+        $this->alert(
+            'success',
+            'Ajuste Guardado'
+        );
 
     }
 

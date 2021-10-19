@@ -51,6 +51,21 @@
                 </div>
             </div>
 
+            <ul class="list-group text-sm">
+                    <li class="list-group-item fondo">
+
+                            Precios en Divisas
+                       
+                        <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success float-right">
+                            <input type="checkbox" @if(storeDivisas($store_id)) checked @endif
+                            wire:click="storeDivisa({{ $store_id }}, {{ storeDivisas($store_id) }})"
+                                   @if(leerJson(Auth::user()->permisos, 'stores.edit') || Auth::user()->role == 100) @else disabled @endif
+                                   class="custom-control-input" id="customSwitchIdD{{ $store_id }}">
+                            <label class="custom-control-label" for="customSwitchIdD{{ $store_id }}"></label>
+                        </div>
+                    </li>
+            </ul>
+
 
         </div>
 
