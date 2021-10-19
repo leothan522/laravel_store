@@ -16,6 +16,8 @@ class Store extends Model
         'email_tienda',
         'direccion_tienda',
         'file_path',
+        't_logo',
+        't_imagen',
         'logo_tienda',
         'imagen_tienda',
         'municipios_id',

@@ -2,6 +2,8 @@
 
 use App\Models\Parametro;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
 
 function hola(){
     return "Funciones Funcionando correctamente";
@@ -302,6 +304,100 @@ function verImagen($path, $name)
         }
         return "https://ui-avatars.com/api/?name=$name&color=7F9CF5&background=EBF4FF";
     }
+}
+
+function crearMiniaturas($img_source, $file_path, $name, $extension = 'png')
+{
+    $manager = new ImageManager();
+
+    $smallthumbnail = $manager->make($img_source)->resize(150, 93, function ($constraint) {
+        $constraint->aspectRatio();
+    })->sharpen(15);
+    $smallthumbnail->save($file_path.'/t_small_'.$name.'.'.$extension);
+
+    $mediumthumbnail = $manager->make($img_source)->resize(300, 185, function ($constraint) {
+        $constraint->aspectRatio();
+    })->sharpen(15);
+    $mediumthumbnail->save($file_path.'/t_medium_'.$name.'.'.$extension);
+
+    $largethumbnail = $manager->make($img_source)->resize(600, 600, function ($constraint) {
+        $constraint->aspectRatio();
+    })->sharpen(15);
+    $largethumbnail->save($file_path.'/t_large_'.$name.'.'.$extension);
+
+}
+
+function mostrarImagen($file_path, $size = 'original', $extra = 'logo', $path = 'public/store-photos/', $t_name = null)
+{
+
+    //$exists = Storage::disk('local')->exists($file_path);
+    //mostrarImagen($file_path, 'large', 'logo', 'public/store-photos/', $t_logo)
+    switch ($size){
+        default:
+            if (!is_null($file_path) && empty(!$file_path)){
+                if (Storage::disk('local')->exists($file_path)) {
+                    return asset(str_replace('public/', 'storage/', $file_path));
+                }
+                return asset('img/img-placeholder-320x320.png');
+            }
+            return asset('img/img-placeholder-320x320.png');
+        break;
+        case "small":
+            $name = 't_small_'.$extra.'_'.$t_name.'.png';
+            if (!is_null($file_path) && empty(!$file_path)){
+                if (Storage::disk('local')->exists($path.''.$file_path.'/'.$name)) {
+                    return asset(str_replace('public/', 'storage/', $path.''.$file_path.'/'.$name));
+                }
+                return asset('img/img-placeholder-320x320.png');
+            }
+            return asset('img/img-placeholder-320x320.png');
+        break;
+        case "medium":
+            $name = 't_medium_'.$extra.'_'.$t_name.'.png';
+            if (!is_null($file_path) && empty(!$file_path)){
+                if (Storage::disk('local')->exists($path.''.$file_path.'/'.$name)) {
+                    return asset(str_replace('public/', 'storage/', $path.''.$file_path.'/'.$name));
+                }
+                return asset('img/img-placeholder-320x320.png');
+            }
+            return asset('img/img-placeholder-320x320.png');
+        break;
+        case "large":
+            $name = 't_large_'.$extra.'_'.$t_name.'.png';
+            if (!is_null($file_path) && empty(!$file_path)){
+                if (Storage::disk('local')->exists($path.''.$file_path.'/'.$name)) {
+                    return asset(str_replace('public/', 'storage/', $path.''.$file_path.'/'.$name));
+                }
+                return asset('img/img-placeholder-320x320.png');
+            }
+            return asset('img/img-placeholder-320x320.png');
+        break;
+    }
+
+}
+
+function borrarImagen($imagen, $file_path, $t_name, $name, $path)
+{
+
+    //borrarImagen($db_logo_tienda, $file_path, $db_t_logo, 'logo', 'public/store-photos/');
+
+    $small = 't_small_'.$name.'_'.$t_name.'.png';
+    $medium = 't_medium_'.$name.'_'.$t_name.'.png';
+    $large = 't_large_'.$name.'_'.$t_name.'.png';
+
+    if (Storage::disk('local')->exists($imagen)) {
+        Storage::disk('local')->delete($imagen);
+    }
+    if (Storage::disk('local')->exists($path.''.$file_path.'/'.$small)) {
+        Storage::disk('local')->delete($path.''.$file_path.'/'.$small);
+    }
+    if (Storage::disk('local')->exists($path.''.$file_path.'/'.$medium)) {
+        Storage::disk('local')->delete($path.''.$file_path.'/'.$medium);
+    }
+    if (Storage::disk('local')->exists($path.''.$file_path.'/'.$large)) {
+        Storage::disk('local')->delete($path.''.$file_path.'/'.$large);
+    }
+
 }
 
 

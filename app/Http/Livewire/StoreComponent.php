@@ -4,20 +4,25 @@ namespace App\Http\Livewire;
 
 use App\Models\Parametro;
 use App\Models\Store;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Intervention\Image\ImageManager;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class StoreComponent extends Component
 {
     use WithPagination;
+    use WithFileUploads;
+
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = [
         'confirmed',
     ];
 
-    public $view = 'show';
+    public $view = 'show', $logo_tienda, $imagen_tienda, $file_path, $t_logo, $t_imagen;
     public $horarios, $store_status,
         $lunes_open, $lunes_closed,
         $martes_open, $martes_closed,
@@ -117,6 +122,10 @@ class StoreComponent extends Component
         $this->email_tienda = null;
         $this->direccion_tienda = null;
         $this->store_id = null;
+        $this->logo_tienda = null;
+        $this->imagen_tienda = null;
+        $this->t_logo = null;
+        $this->t_imagen = null;
     }
 
     public function create()
@@ -127,12 +136,35 @@ class StoreComponent extends Component
 
     public function store()
     {
+        $file_path = time();
+        $logo_tienda = null;
+        $imagen_tienda = null;
+        $manager = new ImageManager();
         $rules = [
             'nombre_tienda' => ['required', 'min:4', Rule::unique('stores')],
-            'rif_tienda' => 'min:6',
-            'jefe_tienda' => 'min:6',
+            'rif_tienda' => 'required',
+            'jefe_tienda' => 'required',
         ];
         $this->validate($rules);
+
+
+        if ($this->logo_tienda){
+            $logo_tienda = $this->logo_tienda->store('public/store-photos/'.$file_path);
+            $t_img = $this->logo_tienda->temporaryUrl();
+            $t_path = Storage::path('public/store-photos/'.$file_path);
+            $t_nombre = 'logo_'.$file_path;
+            crearMiniaturas($t_img, $t_path, $t_nombre);
+        }
+        if ($this->imagen_tienda){
+            $imagen_tienda = $this->imagen_tienda->store('public/store-photos/'.$file_path);
+            $t_img = $this->imagen_tienda->temporaryUrl();
+            $t_path = Storage::path('public/store-photos/'.$file_path);
+            $t_nombre = 'imagen_'.$file_path;
+            crearMiniaturas($t_img, $t_path, $t_nombre);
+        }
+
+        if (!$this->logo_tienda && !$this->imagen_tienda){ $file_path = null; }
+
         $store = new Store();
         $store->nombre_tienda = $this->nombre_tienda;
         $store->rif_tienda = $this->rif_tienda;
@@ -140,6 +172,11 @@ class StoreComponent extends Component
         $store->telefonos_tienda = $this->telefonos_tienda;
         $store->email_tienda = $this->email_tienda;
         $store->direccion_tienda = $this->direccion_tienda;
+        $store->file_path = $file_path;
+        $store->t_logo = $file_path;
+        $store->t_imagen = $file_path;
+        $store->logo_tienda = $logo_tienda;
+        $store->imagen_tienda = $imagen_tienda;
         $store->save();
         $store_default = Parametro::where('nombre', 'store_default')->first();
         if (!$store_default){
@@ -148,7 +185,7 @@ class StoreComponent extends Component
             $parametro->tabla_id = $store->id;
             $parametro->save();
         }
-        $this->view = 'show';
+        $this->show($store->id);
         $this->alert(
             'success',
             'Tienda Creada Exitosamente'
@@ -193,11 +230,20 @@ class StoreComponent extends Component
         $this->telefonos_tienda = $store->telefonos_tienda;
         $this->email_tienda = $store->email_tienda;
         $this->direccion_tienda = $store->direccion_tienda;
+        $this->file_path = $store->file_path;
+        $this->t_logo = $store->t_logo;
+        $this->t_imagen = $store->t_imagen;
+        $this->logo_tienda = $store->logo_tienda;
+        $this->imagen_tienda = $store->imagen_tienda;
         $this->view = 'show';
     }
 
     public function images()
     {
+        $this->logo_tienda = null;
+        $this->imagen_tienda = null;
+        $this->t_logo = null;
+        $this->t_imagen = null;
         $this->view = 'images';
     }
 
@@ -294,12 +340,22 @@ class StoreComponent extends Component
     public function confirmed()
     {
         // Example code inside confirmed callback
-        $user = Store::find($this->store_id);
+        $store = Store::find($this->store_id);
+
+        $file_path = $store->file_path;
+        $db_t_logo = $store->t_logo;
+        $db_t_imagen = $store->t_imagen;
+        $db_logo_tienda = $store->logo_tienda;
+        $db_imagen_tienda = $store->imagen_tienda;
+
+        borrarImagen($db_logo_tienda, $file_path, $db_t_logo, 'logo', 'public/store-photos/');
+        borrarImagen($db_imagen_tienda, $file_path, $db_t_imagen, 'imagen', 'public/store-photos/');
+
         $store_default = Parametro::where('nombre', 'store_default')->where('tabla_id', $this->store_id)->first();
         if ($store_default){ $store_default->delete(); }
         $store_status = Parametro::where('nombre', 'store_status')->where('tabla_id', $this->store_id)->first();
         if ($store_status){ $store_status->delete(); }
-        $user->delete();
+        $store->delete();
         $this->limpiar();
         $this->alert(
             'success',
@@ -322,6 +378,60 @@ class StoreComponent extends Component
             $parametro->tabla_id = $id;
             $parametro->save();
         }
+    }
+
+    public function updateImagen()
+    {
+
+        $store = Store::find($this->store_id);
+
+        if (is_null($store->file_path)){
+            $file_path = time();
+            $store->file_path = $file_path;
+        }else{
+            $file_path = $store->file_path;
+        }
+
+        $db_t_logo = $store->t_logo;
+        $db_t_imagen = $store->t_imagen;
+        $t_logo = time();
+        $t_imagen = time();
+        $db_logo_tienda = $store->logo_tienda;
+        $db_imagen_tienda = $store->imagen_tienda;
+
+
+        if ($this->logo_tienda){
+            borrarImagen($db_logo_tienda, $file_path, $db_t_logo, 'logo', 'public/store-photos/');
+            $logo_tienda = $this->logo_tienda->store('public/store-photos/'.$file_path);
+            $t_img = $this->logo_tienda->temporaryUrl();
+            $t_path = Storage::path('public/store-photos/'.$file_path);
+            $t_nombre = 'logo_'.$t_logo;
+            crearMiniaturas($t_img, $t_path, $t_nombre);
+            $store->logo_tienda = $logo_tienda;
+            $store->t_logo = $t_logo;
+        }
+        if ($this->imagen_tienda){
+            borrarImagen($db_imagen_tienda, $file_path, $db_t_imagen, 'imagen', 'public/store-photos/');
+            $imagen_tienda = $this->imagen_tienda->store('public/store-photos/'.$file_path);
+            $t_img = $this->imagen_tienda->temporaryUrl();
+            $t_path = Storage::path('public/store-photos/'.$file_path);
+            $t_nombre = 'imagen_'.$t_imagen;
+            crearMiniaturas($t_img, $t_path, $t_nombre);
+            $store->imagen_tienda = $imagen_tienda;
+            $store->t_imagen = $t_imagen;
+        }
+
+        $store->update();
+        $this->show($this->store_id);
+
+        $this->alert(
+            'success',
+            'Imagenes Actualizadas'
+        );
+
+
+
+
     }
 
 }

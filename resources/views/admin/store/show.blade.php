@@ -6,8 +6,8 @@
                 <div class="card-body box-profile">
                     <div class="text-center">
                         <img class="profile-user-img img-fluid img-circle"
-                             src="{{ asset('img/img-placeholder-320x320.png') }}"
-                             alt="User profile picture">
+                             src="{{ mostrarImagen($file_path, 'large', 'logo', 'public/store-photos/', $t_logo) }}"
+                             alt="Logo Tienda">
                     </div>
 
                     <h3 class="profile-username text-center">{{ ucwords($nombre_tienda) }}</h3>
@@ -46,7 +46,7 @@
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
-                        <img id="blah" class="img-thumbnail" src="{{ asset('img/img-placeholder-320x320.png') }}" />
+                        <img id="blah" class="img-thumbnail" src="{{ mostrarImagen($file_path, 'large', 'imagen', 'public/store-photos/', $t_imagen) }}" />
                     </div>
                 </div>
             </div>

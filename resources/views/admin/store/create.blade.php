@@ -16,7 +16,7 @@
 
                         <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input type="file" name="logo_tienda" class="custom-file-input" id="customFileLangLogo" onchange='cambiarLogo()' lang="es" accept="image/jpeg, image/png">
+                                <input type="file" name="logo_tienda" wire:model="logo_tienda" class="custom-file-input" id="customFileLangLogo" onchange='cambiarLogo()' lang="es" accept="image/jpeg, image/png">
                                 <label class="custom-file-label" for="customFileLang" data-browse="Elegir" id="infoLogo">Logo</label>
                                 @error('logo_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
@@ -29,7 +29,7 @@
 
                         <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input type="file" name="imagen_tienda" class="custom-file-input" id="customFileLangImagen" onchange='cambiarImagen()' lang="es" accept="image/jpeg, image/png">
+                                <input type="file" name="imagen_tienda" wire:model="imagen_tienda" class="custom-file-input" id="customFileLangImagen" onchange='cambiarImagen()' lang="es" accept="image/jpeg, image/png">
                                 <label class="custom-file-label" for="customFileLang" data-browse="Elegir" id="infoImagen">Imagen</label>
                                 @error('imagen_tienda')
                                 <span class="col-sm-12 text-sm text-bold text-danger">
@@ -42,6 +42,24 @@
 
                 </div>
             </div>
+
+            @if ($logo_tienda)
+
+                Logo Preview:
+
+                <img src="{{ $logo_tienda->temporaryUrl() }}" class="img-fluid img-thumbnail rounded mx-auto d-block">
+
+            @endif
+
+            @if ($imagen_tienda)
+
+                Imagen Preview:
+
+                <img src="{{ $imagen_tienda->temporaryUrl() }}" class="img-fluid img-thumbnail rounded mx-auto d-block">
+
+            @endif
+
+            <div wire:loading wire:target="logo_tienda">Uploading...</div>
 
         </div>
 

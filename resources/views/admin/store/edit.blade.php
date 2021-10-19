@@ -7,7 +7,7 @@
                 <div class="card-body box-profile">
                     <div class="text-center">
                         <img class="profile-user-img img-fluid img-circle"
-                             src="{{ asset('img/img-placeholder-320x320.png') }}"
+                             src="{{ mostrarImagen($file_path, 'large', 'logo', 'public/store-photos/') }}"
                              alt="User profile picture">
                     </div>
 
