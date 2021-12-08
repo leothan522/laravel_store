@@ -9,7 +9,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.7",
-        "jantinnerezo/livewire-alert": "^2.1",
+        "jantinnerezo/livewire-alert": "^2.2",
         "jeroennoten/laravel-adminlte": "^3.7",
         "laravel-lang/lang": "^10.1",
         "laravel/framework": "^8.54",

@@ -5,10 +5,12 @@ namespace App\Http\Livewire;
 use App\Models\Parametro;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
 class ParametrosComponent extends Component
 {
+    use LivewireAlert;
     protected $listeners = [
         'confirmed'
     ];

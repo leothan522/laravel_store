@@ -10,11 +10,13 @@ use Intervention\Image\ImageManager;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class StoreComponent extends Component
 {
     use WithPagination;
     use WithFileUploads;
+    use LivewireAlert;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -273,10 +275,10 @@ class StoreComponent extends Component
             $text = "Tienda Abierta";
         }
         $this->parametros('store_status', $valor, $tabla_id);
-        $this->alert(
-            'success',
-            $text
-        );
+            $this->alert(
+                'success',
+                $text
+            );
     }
 
     public function storeHorarios()

@@ -55,7 +55,7 @@
                     <li class="list-group-item fondo">
 
                             Precios en Divisas
-                       
+
                         <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success float-right">
                             <input type="checkbox" @if(storeDivisas($store_id)) checked @endif
                             wire:click="storeDivisa({{ $store_id }}, {{ storeDivisas($store_id) }})"

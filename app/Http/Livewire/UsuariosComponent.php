@@ -7,13 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 use Livewire\WithPagination;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class UsuariosComponent extends Component
 {
     use WithPagination;
+    use LivewireAlert;
     protected $paginationTheme = 'bootstrap';
 
     protected $listeners = [
