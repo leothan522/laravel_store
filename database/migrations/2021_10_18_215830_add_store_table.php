@@ -16,6 +16,7 @@ class AddStoreTable extends Migration
         Schema::table('stores', function (Blueprint $table) {
             $table->string('t_logo')->nullable()->after('file_path');
             $table->string('t_imagen')->nullable()->after('t_logo');
+            $table->string('moneda_base')->nullable()->after('rif_tienda')->default('Bs.');
         });
     }
 

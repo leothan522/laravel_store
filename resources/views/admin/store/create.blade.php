@@ -104,6 +104,25 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="email">Moneda Base</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
+                                </div>
+                                <select class="custom-select" wire:model.debounce.10000000ms="moneda_base">
+                                    <option value="">Seleccione</option>
+                                    <option value="Bs.">Bolivares</option>
+                                    <option value="$">Dolares</option>
+                                </select>
+                                @error('moneda_base')
+                                <span class="col-sm-12 text-sm text-bold text-danger">
+                                                        <i class="icon fas fa-exclamation-triangle"></i>
+                                                        {{ $message }}
+                                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="email">Jefe de Tienda</label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">

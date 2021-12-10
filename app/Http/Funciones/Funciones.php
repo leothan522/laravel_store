@@ -402,11 +402,11 @@ function borrarImagen($imagen, $file_path, $t_name, $name, $path)
 
 function storeDivisas($store_id)
 {
-    $parametro = Parametro::where('nombre', 'store_divisas')->where('tabla_id', $store_id)->first();
+    $parametro = Parametro::where('nombre', 'store_multimoneda')->where('tabla_id', $store_id)->first();
     if ($parametro){
         return $parametro->valor;
     }else{
-        return 1;
+        return 0;
     }
 
 }

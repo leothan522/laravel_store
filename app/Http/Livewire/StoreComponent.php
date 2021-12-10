@@ -34,7 +34,7 @@ class StoreComponent extends Component
         $sabado_open, $sabado_closed,
         $domingo_open, $domingo_closed;
 
-    public $nombre_tienda, $rif_tienda, $jefe_tienda, $telefonos_tienda, $email_tienda, $direccion_tienda, $store_id;
+    public $nombre_tienda, $rif_tienda, $moneda_base, $jefe_tienda, $telefonos_tienda, $email_tienda, $direccion_tienda, $store_id;
 
     public function render()
     {
@@ -119,6 +119,7 @@ class StoreComponent extends Component
     {
         $this->nombre_tienda = null;
         $this->rif_tienda= null;
+        $this->moneda_base= null;
         $this->jefe_tienda = null;
         $this->telefonos_tienda = null;
         $this->email_tienda = null;
@@ -145,6 +146,7 @@ class StoreComponent extends Component
         $rules = [
             'nombre_tienda' => ['required', 'min:4', Rule::unique('stores')],
             'rif_tienda' => 'required',
+            'moneda_base' => 'required',
             'jefe_tienda' => 'required',
         ];
         $this->validate($rules);
@@ -170,6 +172,7 @@ class StoreComponent extends Component
         $store = new Store();
         $store->nombre_tienda = $this->nombre_tienda;
         $store->rif_tienda = $this->rif_tienda;
+        $store->moneda_base = $this->moneda_base;
         $store->jefe_tienda = $this->jefe_tienda;
         $store->telefonos_tienda = $this->telefonos_tienda;
         $store->email_tienda = $this->email_tienda;
@@ -228,6 +231,7 @@ class StoreComponent extends Component
         $this->store_id = $store->id;
         $this->nombre_tienda = $store->nombre_tienda;
         $this->rif_tienda = $store->rif_tienda;
+        $this->moneda_base = $store->moneda_base;
         $this->jefe_tienda = $store->jefe_tienda;
         $this->telefonos_tienda = $store->telefonos_tienda;
         $this->email_tienda = $store->email_tienda;
@@ -436,9 +440,9 @@ class StoreComponent extends Component
     public function storeDivisa($id, $valor)
     {
         if ($valor == 1){
-            $this->parametros('store_divisas', 0, $id);
+            $this->parametros('store_multimoneda', 0, $id);
         }else{
-            $this->parametros('store_divisas', 1, $id);
+            $this->parametros('store_multimoneda', 1, $id);
         }
 
         $this->alert(
