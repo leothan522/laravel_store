@@ -241,10 +241,39 @@ return [
         ],
 
         // Sidebar items:
+
+        // Inventario:
+        [
+            'text'      => 'Inventario',
+            'icon'      => 'fas fa-fw fa-cubes',
+            'can'       => 'inventario',
+            'submenu' => [
+                [
+                    'text' => 'Articulos',
+                    'icon' => 'fas fa-fw fa-cube',
+                    'route' => 'articulos.index',
+                    'can' => 'articulos'
+                ],
+                [
+                    'text' => 'Ajustes',
+                    'icon' => 'fas fa-fw fa-list',
+                    'route' => 'ajustes.index',
+                    'can' => 'ajustes'
+                ],
+                [
+                    'text' => 'Reportes',
+                    'icon' => 'fas fa-fw fa-cube',
+                    'route' => 'inventario.reportes',
+                    'can' => 'reportes_inventario'
+                ]
+            ],
+        ],
+
+        //configuracion
         [
             'text'      => 'Configuración',
             'icon'      => 'fas fa-fw fa-cogs',
-            'can'       => 'usuarios',
+            'can'       => 'configuracion',
             'submenu' => [
                 [
                     'text' => 'Store',

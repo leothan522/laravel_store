@@ -24,6 +24,9 @@
                    <div class="col-md-4">
                        @include('admin.usuarios.permisos.stores')
                    </div>
+                   <div class="col-md-4">
+                       @include('admin.usuarios.permisos.articulos')
+                   </div>
                </div>
 
 
