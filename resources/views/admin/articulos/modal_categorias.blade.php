@@ -49,13 +49,7 @@
                                         @else
                                             <button class="btn btn-info btn-sm" disabled><i class="fas fa-edit"></i></button>
                                         @endif
-                                        {{--@if ((leerJson(Auth::user()->permisos, 'usuarios.destroy') || Auth::user()->role == 100) && ($categoria->role != 100 && $categoria->id != Auth::user()->id))
-                                            <button wire:click="destroy({{ $categoria->id }})" class="btn btn-info btn-sm">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        @else
-                                            <button class="btn btn-info btn-sm" disabled><i class="fas fa-trash-alt"></i></button>
-                                        @endif--}}
+
                                     </div>
                                 </td>
                                 </tr>

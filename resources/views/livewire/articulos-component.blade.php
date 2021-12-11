@@ -24,7 +24,7 @@
                         </button>
                         <button type="button" class="list-group-item list-group-item-action"
                                 data-toggle="modal" data-target="#modal-unidades">
-                            Unidades <span class="float-right badge bg-info">5</span>
+                            Unidades <span class="float-right badge bg-info">{{ $unidades_count }}</span>
                         </button>
                     </ul>
 
