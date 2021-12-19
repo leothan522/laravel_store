@@ -82,6 +82,7 @@
                             </div>
                         </div>
 
+                        @if($multi == 0)
                         <div class="col-md-6">
                             <div class="card card-gray-dark">
                                 <div class="card-header">
@@ -150,7 +151,42 @@
                                 </div>
                             </div>
                         </div>
+                        @else
+                        <div class="col-md-6">
+                            <div class="card card-gray-dark">
+                                <div class="card-header">
+                                    <h5 class="card-title">Multi Stores</h5>
+                                    <div class="card-tools">
+                                        <div class="custom-control custom-switch custom-switch-on-success float-right">
+                                            <input type="checkbox" wire:click="store_multi({{ $user_id }})" class="custom-control-input" id="customSwitch0"
+                                            @if($user_multi) checked @endif >
+                                            <label class="custom-control-label" for="customSwitch0"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
 
+
+                                    <ul class="list-group text-sm">
+                                        @php($i = 0)
+                                        @foreach($stores as $store)
+                                            @php($i++)
+                                        <li class="list-group-item">
+                                            {{ ucfirst($store->nombre_tienda) }}
+                                            <div class="custom-control custom-switch custom-switch-on-success float-right">
+                                                <input type="checkbox" @if(user_store($user_id, $store->id)) checked @endif
+                                                            wire:click="multi_store({{ $user_id }}, {{ $store->id }})"
+                                                       class="custom-control-input" id="customSwitch{{ $i }}">
+                                                <label class="custom-control-label" for="customSwitch{{ $i }}"></label>
+                                            </div>
+                                        </li>
+                                        @endforeach
+                                    </ul>
+
+                                </div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -158,6 +194,13 @@
 
             </div>
             <div class="modal-footer justify-content-end">
+                @if($cont > 1)
+                    @if($multi == 0)
+                        <button type="button" wire:click="edit_multi({{ 1 }})" class="btn btn-info btn-sm">Multi Stores</button>
+                    @else
+                        <button type="button" wire:click="edit_multi({{ 0 }})" class="btn btn-info btn-sm">Editar usuario</button>
+                    @endif
+                @endif
                 <button type="button" wire:click="limpiar()" class="btn btn-default btn-sm" data-dismiss="modal">{{ __('Close') }}</button>
             </div>
         </div>

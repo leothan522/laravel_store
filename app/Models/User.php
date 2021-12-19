@@ -32,7 +32,8 @@ class User extends Authenticatable
         'password',
         'role',
         'estatus',
-        'permisos'
+        'permisos',
+        'multi_stores'
     ];
 
     /**
@@ -87,6 +88,10 @@ class User extends Authenticatable
     public function scopeBuscar($query, $keyword)
     {
         return $query->where('name', 'LIKE', "%$keyword%");
+    }
+
+    public function multi(){
+        $this->hasMany(Multi::class, 'users_id', 'id');
     }
 
 

@@ -361,6 +361,8 @@ class StoreComponent extends Component
         if ($store_default){ $store_default->delete(); }
         $store_status = Parametro::where('nombre', 'store_status')->where('tabla_id', $this->store_id)->first();
         if ($store_status){ $store_status->delete(); }
+        $store_multimoneda = Parametro::where('nombre', 'store_multimoneda')->where('tabla_id', $this->store_id)->first();
+        if ($store_multimoneda){ $store_multimoneda->delete(); }
         $store->delete();
         $this->limpiar();
         $this->alert(

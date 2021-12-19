@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePreciosTable extends Migration
+class CreateMultiStoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,11 @@ class CreatePreciosTable extends Migration
      */
     public function up()
     {
-        Schema::create('precios', function (Blueprint $table) {
+        Schema::create('multi_stores', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('users_id')->unsigned();
             $table->bigInteger('stores_id')->unsigned();
-            $table->bigInteger('articulos_id')->unsigned();
-            $table->string('tipo_precio');
-            $table->string('moneda');
-            $table->double('precio', 12, 3);
-            $table->integer('estatus')->default('1');
-            $table->foreign('articulos_id')->references('id')->on('articulos')->cascadeOnDelete();
+            $table->foreign('users_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreign('stores_id')->references('id')->on('stores')->cascadeOnDelete();
             $table->timestamps();
         });
@@ -34,6 +30,6 @@ class CreatePreciosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('precios');
+        Schema::dropIfExists('multi_stores');
     }
 }

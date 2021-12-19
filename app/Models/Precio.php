@@ -12,6 +12,7 @@ class Precio extends Model
     protected $table = 'precios';
 
     protected $fillable = [
+        'stores_id',
         'articulos_id',
         'tipo_precio',
         'moneda',

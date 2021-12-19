@@ -33,4 +33,11 @@ class Store extends Model
     {
         return $this->belongsTo(Municipio::class, 'municipios_id', 'id');
     }
+
+    public function multi()
+    {
+        $this->hasMany(Multi::class, 'stores_id', 'id');
+    }
+
+
 }

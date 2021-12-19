@@ -4,6 +4,8 @@ use App\Models\Parametro;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManager;
+use App\Models\Multi;
+use App\Models\Store;
 
 function hola(){
     return "Funciones Funcionando correctamente";
@@ -407,6 +409,32 @@ function storeDivisas($store_id)
         return $parametro->valor;
     }else{
         return 0;
+    }
+
+}
+
+function user_store($user, $store)
+{
+    $exite = Multi::where('users_id', $user)->where('stores_id', $store)->first();
+    return $exite;
+}
+
+function permisos_store($store)
+{
+    $cont = Store::count();
+    if ($cont > 1){
+        $user_id = auth()->user()->id;
+        $user_multi_stores = auth()->user()->multi_stores;
+        if($user_multi_stores){
+
+            return user_store($user_id, $store);
+
+        }else{
+            return storeDefault($store);
+        }
+
+    }else{
+        return true;
     }
 
 }

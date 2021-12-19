@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Articulo;
 use App\Models\Categoria;
 use App\Models\Unidad;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
@@ -17,12 +19,28 @@ class ArticulosComponent extends Component
 
     protected $listeners = [
         'confirmed_categoria',
-        'confirmed_unidad'
+        'confirmed_unidad',
+        'confirmed_articulo'
     ];
 
-    public $view_categoria = 'create_categoria', $view_unidad = 'create_unidad';
+    public $view_categoria = 'create_categoria', $view_unidad = 'create_unidad', $view_articulo = 'create_articulo';
     public $categoria_id, $codigo_categoria, $descripcion_categoria, $estatus_categoria;
     public $unidad_id, $codigo_unidad, $descripcion_unidad;
+    public $art_codigo_categoria, $art_descripcion_categoria, $art_codigo_unidad, $art_descripcion_unidad;
+    public $articulo_id, $codigo_articulo, $descripcion_articulo, $estatus_articulo;
+    public $busqueda;
+
+    public function mount(Request $request)
+    {
+        if (!is_null($request->articulo)){
+            $articulo = Articulo::where('codigo_articulo', $request->articulo)->first();
+            if ($articulo){
+                $this->edit_articulo($articulo->id);
+            }else{
+                $this->busqueda = Articulo::where('descripcion_articulo', 'LIKE', "%$request->articulo%")->orderBy('codigo_articulo', 'ASC')->get();
+            }
+        }
+    }
 
     public function render()
     {
@@ -48,6 +66,16 @@ class ArticulosComponent extends Component
         $this->unidad_id = null;
         $this->descripcion_unidad = null;
         $this->view_unidad = "create_unidad";
+
+        $this->codigo_articulo = null;
+        $this->descripcion_articulo = null;
+        $this->art_codigo_categoria = null;
+        $this->art_descripcion_categoria = null;
+        $this->art_codigo_unidad = null;
+        $this->art_descripcion_unidad = null;
+        $this->view_articulo = 'create_articulo';
+
+        $this->busqueda = null;
     }
 
     public function store_categoria()
@@ -203,6 +231,171 @@ class ArticulosComponent extends Component
         $this->alert(
             'success',
             'Unidad Eliminada'
+        );
+
+    }
+
+    public function verificar_categoria()
+    {
+        $categoria = Categoria::where('codigo_categoria', $this->art_codigo_categoria)->first();
+        if ($categoria){
+            $this->art_codigo_categoria = strtoupper($categoria->codigo_categoria);
+            $this->art_descripcion_categoria = strtoupper($categoria->descripcion_categoria);
+            $this->categoria_id = $categoria->id;
+        }else{
+            $this->art_codigo_categoria = null;
+            $this->art_descripcion_categoria = null;
+            $this->alert(
+                'error',
+                'Codigo Categoria Incorrecto');
+        }
+    }
+
+    public function verificar_unidad()
+    {
+        $unidad = Unidad::where('codigo_unidad', $this->art_codigo_unidad)->first();
+        if ($unidad){
+            $this->art_codigo_unidad = strtoupper($unidad->codigo_unidad);
+            $this->art_descripcion_unidad = strtoupper($unidad->descripcion_unidad);
+            $this->unidad_id = $unidad->id;
+        }else{
+            $this->art_codigo_unidad = null;
+            $this->art_descripcion_unidad = null;
+            $this->alert(
+                'error',
+                'Codigo Unidad Incorrecto');
+        }
+    }
+
+    public function store_articulo()
+    {
+        $this->verificar_categoria();
+        $this->verificar_unidad();
+
+        $rules = [
+            'codigo_articulo' => ['required', 'min:4', 'alpha_dash', Rule::unique('articulos')],
+            'descripcion_articulo' => 'required',
+            'art_codigo_categoria' => 'required',
+            'art_codigo_unidad' => 'required'
+        ];
+        $messages = [
+            'art_codigo_categoria.required' => 'Codigo Categoria Incorrecto',
+            'art_codigo_unidad.required' => 'Codigo Unidad Incorrecto'
+        ];
+        $this->validate($rules, $messages);
+
+        $articulo = new Articulo();
+        $articulo->codigo_articulo = strtoupper($this->codigo_articulo);
+        $articulo->descripcion_articulo = strtoupper($this->descripcion_articulo);
+        $articulo->categorias_id = $this->categoria_id;
+        $articulo->unidades_id = $this->unidad_id;
+        $articulo->estatus = 1;
+        $articulo->save();
+
+        $this->edit_articulo($articulo->id);
+
+        $this->alert(
+            'success',
+            'Datos Guardados Exitomsamente'
+        );
+    }
+
+    public function edit_articulo($id)
+    {
+        $articulo = Articulo::find($id);
+        $this->articulo_id =$articulo->id;
+        $this->codigo_articulo = $articulo->codigo_articulo;
+        $this->descripcion_articulo = $articulo->descripcion_articulo;
+        $this->art_codigo_categoria = $articulo->categorias->codigo_categoria;
+        $this->art_descripcion_categoria = $articulo->categorias->descripcion_categoria;
+        $this->art_codigo_unidad = $articulo->unidades->codigo_unidad;
+        $this->art_descripcion_unidad = $articulo->unidades->descripcion_unidad;
+        $this->estatus_articulo = $articulo->estatus;
+        $this->view_articulo = 'update_articulo';
+    }
+
+    public function update_articulo($id)
+    {
+        $this->verificar_categoria();
+        $this->verificar_unidad();
+
+        $rules = [
+            'codigo_articulo' => ['required', 'min:4', 'alpha_dash', Rule::unique('articulos', 'codigo_articulo')->ignore($id)],
+            'descripcion_articulo' => 'required',
+            'art_codigo_categoria' => 'required',
+            'art_codigo_unidad' => 'required'
+        ];
+        $messages = [
+            'art_codigo_categoria.required' => 'Codigo Categoria Incorrecto',
+            'art_codigo_unidad.required' => 'Codigo Unidad Incorrecto'
+        ];
+        $this->validate($rules, $messages);
+
+        $articulo = Articulo::find($id);
+        $articulo->codigo_articulo = strtoupper($this->codigo_articulo);
+        $articulo->descripcion_articulo = strtoupper($this->descripcion_articulo);
+        $articulo->categorias_id = $this->categoria_id;
+        $articulo->unidades_id = $this->unidad_id;
+        $articulo->update();
+
+        $this->edit_articulo($articulo->id);
+
+        $this->alert(
+            'success',
+            'Datos Guardados Exitosamente'
+        );
+
+    }
+
+    public function estatus_articulo($id)
+    {
+        $articulo = Articulo::find($id);
+        if ($articulo->estatus == 1){
+            $articulo->estatus = 0;
+            $this->estatus_articulo = 0;
+            $articulo->update();
+            $this->alert(
+                'success',
+                'Articulo Inactivo'
+            );
+
+        }else{
+            $articulo->estatus = 1;
+            $this->estatus_articulo = 1;
+            $articulo->update();
+            $this->alert(
+                'success',
+                'Articulo Activo'
+            );
+        }
+
+    }
+
+    public function destroy_articulo($id)
+    {
+        $this->articulo_id= $id;
+        $this->confirm('¿Estas seguro?', [
+            'toast' => false,
+            'position' => 'center',
+            'showConfirmButton' => true,
+            'confirmButtonText' =>  '¡Sí, bórralo!',
+            'text' =>  '¡No podrás revertir esto!',
+            'cancelButtonText' => 'No',
+            'onConfirmed' => 'confirmed_articulo',
+        ]);
+
+    }
+
+    public function confirmed_articulo()
+    {
+        // Example code inside confirmed callback
+        $articulo = Articulo::find($this->articulo_id);
+        $articulo->delete();
+        $this->articulo_id = null;
+        $this->limpiar();
+        $this->alert(
+            'success',
+            'Articulo Eliminado'
         );
 
     }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Multi;
+use App\Models\Store;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,8 +23,8 @@ class UsuariosComponent extends Component
         'confirmed',
     ];
 
-    public $name, $email, $password, $role, $busqueda;
-    public $user_id, $user_name, $user_email, $user_password, $user_role, $user_estatus, $user_fecha, $user_permisos, $user_path;
+    public $name, $email, $password, $role, $busqueda, $multi = 0, $stores;
+    public $user_id, $user_name, $user_email, $user_password, $user_role, $user_estatus, $user_multi, $user_fecha, $user_permisos, $user_path;
 
     public function mount(Request $request)
     {
@@ -37,8 +39,11 @@ class UsuariosComponent extends Component
         if ($users->isEmpty()){
             verSweetAlert2("Busqueda sin resultados", 'toast', null, 'error');
         }
+
+        $cont = Store::count();
         return view('livewire.usuarios-component')
-            ->with('users', $users);
+            ->with('users', $users)
+            ->with('cont', $cont);
     }
 
     public function generarClave()
@@ -95,6 +100,7 @@ class UsuariosComponent extends Component
         $this->user_email = $user->email;
         $this->user_role = $user->role;
         $this->user_estatus = $user->estatus;
+        $this->user_multi = $user->multi_stores;
         $this->user_fecha = $user->created_at;
         $this->user_path = $user->profile_photo_path;
     }
@@ -218,5 +224,47 @@ class UsuariosComponent extends Component
              'Usuario Eliminado'
        );
 
+    }
+
+    public function edit_multi($opcion)
+    {
+        $this->multi = $opcion;
+        if ($this->multi){
+            $store = Store::orderBy('nombre_tienda')->get();
+            $this->stores = $store;
+        }
+    }
+
+    public function store_multi($id)
+    {
+        $usuario = User::find($id);
+        if ($this->user_multi == 0){
+            $this->user_multi = 1;
+        }else{
+            $this->user_multi = 0;
+        }
+        $usuario->multi_stores = $this->user_multi;
+        $usuario->update();
+        $this->alert(
+            'success',
+            'Datos Guardados'
+        );
+    }
+
+    public function multi_store($user, $store)
+    {
+        $existe = user_store($user, $store);
+        if ($existe){
+            $existe->delete();
+        }else{
+            $multi = new Multi();
+            $multi->users_id = $user;
+            $multi->stores_id = $store;
+            $multi->save();
+        }
+        $this->alert(
+            'success',
+            'Datos Guardados'
+        );
     }
 }

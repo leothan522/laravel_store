@@ -25,7 +25,7 @@ Route::middleware(['auth', 'isadmin', 'estatus', 'permisos'])->prefix('/dashboar
     Route::get('usuarios/{usuario?}', 'Admin\UsersController@index')->name('usuarios.index');
     Route::get('export/usuarios', 'Admin\UsersController@export')->name('usuarios.excel');
     Route::get('store', 'Admin\StoresController@index')->name('stores.index');
-    Route::get('articulos', 'Admin\ArticulosController@index')->name('articulos.index');
+    Route::get('articulos/{articulo?}', 'Admin\ArticulosController@index')->name('articulos.index');
     Route::get('ajustes', 'Admin\ArticulosController@index')->name('ajustes.index');
     Route::get('inventario/reportes', 'Admin\ArticulosController@index')->name('inventario.reportes');
 
