@@ -4,6 +4,8 @@ namespace App\Http\Livewire;
 
 use App\Models\Articulo;
 use App\Models\Categoria;
+use App\Models\Precio;
+use App\Models\Store;
 use App\Models\Unidad;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -23,12 +25,12 @@ class ArticulosComponent extends Component
         'confirmed_articulo'
     ];
 
-    public $view_categoria = 'create_categoria', $view_unidad = 'create_unidad', $view_articulo = 'create_articulo';
+    public $view_categoria = 'create_categoria', $view_unidad = 'create_unidad', $view_articulo = 'create_articulo', $view_precio = 'create_precio';
     public $categoria_id, $codigo_categoria, $descripcion_categoria, $estatus_categoria;
     public $unidad_id, $codigo_unidad, $descripcion_unidad;
     public $art_codigo_categoria, $art_descripcion_categoria, $art_codigo_unidad, $art_descripcion_unidad;
-    public $articulo_id, $codigo_articulo, $descripcion_articulo, $estatus_articulo;
-    public $busqueda;
+    public $articulo_id, $codigo_articulo, $descripcion_articulo, $estatus_articulo, $busqueda;
+    public $tipo, $moneda, $precio, $stores, $cont, $prueba, $precios_store;
 
     public function mount(Request $request)
     {
@@ -40,6 +42,7 @@ class ArticulosComponent extends Component
                 $this->busqueda = Articulo::where('descripcion_articulo', 'LIKE', "%$request->articulo%")->orderBy('codigo_articulo', 'ASC')->get();
             }
         }
+        $this->stores = Store::orderBy('nombre_tienda', 'ASC')->get();
     }
 
     public function render()
@@ -398,6 +401,31 @@ class ArticulosComponent extends Component
             'Articulo Eliminado'
         );
 
+    }
+
+    public function show_precios($articulo)
+    {
+
+    if (!$this->stores->isEmpty()){
+
+        $this->cont = true;
+        $this->prueba = primera_store();
+        $this->moneda = moneda_base($this->prueba);
+        $this->precios_store = Precio::where('stores_id', $this->prueba)->where('articulos_id', $articulo)->orderBy('tipo_precio', 'ASC')->get();
+
+    }else{
+        $this->alert(
+            'warning',
+            'Store No definida'
+        );
+        $this->cont = false;
+    }
+
+    }
+
+    public function updatedPrueba()
+    {
+        $this->moneda = moneda_base($this->prueba);
     }
 
 }

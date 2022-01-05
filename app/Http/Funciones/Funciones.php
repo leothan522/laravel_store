@@ -422,6 +422,11 @@ function user_store($user, $store)
 function permisos_store($store)
 {
     $cont = Store::count();
+
+    if (auth()->user()->role == 100){
+        return true;
+    }
+
     if ($cont > 1){
         $user_id = auth()->user()->id;
         $user_multi_stores = auth()->user()->multi_stores;
@@ -437,6 +442,22 @@ function permisos_store($store)
         return true;
     }
 
+}
+
+function primera_store()
+{
+    $stores = Store::orderBy('nombre_tienda', 'ASC')->get();
+    foreach ($stores as $store){
+        if (permisos_store($store->id)){
+            return $store->id;
+        }
+    }
+}
+
+function moneda_base($store_id)
+{
+    $store = Store::find($store_id);
+    return $store->moneda_base;
 }
 
 

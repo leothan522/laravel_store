@@ -8,33 +8,46 @@
                 </button>
             </div>
             <div class="modal-body">
-
+                <form wire:submit.prevent="store_precio">
                 <div wire:loading>
                     <div class="overlay">
                         <i class="fas fa-2x fa-sync-alt"></i>
                     </div>
                 </div>
 
+                <div class="row justify-content-end">
+                    <div class="col-md-4 form-group">
+                        <select class="form-control" wire:model="prueba" name="prueba">
+                            @foreach($stores as $store)
+                                @if(permisos_store($store->id))
+                                    <option value="{{ $store->id }}">{{ ucfirst($store->nombre_tienda) }}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
 
-                {{--<div class="table-responsive">
+                <div class="table-responsive">
                     <table class="table table-hover bg-light">
                         <thead class="thead-dark">
                         <tr>
-                            <th scope="col" class="text-center">#</th>
-                            <th scope="col">Código</th>
-                            <th scope="col">Descripción</th>
+                            {{--<th scope="col" class="text-center">#</th>--}}
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Moneda</th>
+                            <th scope="col" class="text-center">Precio</th>
                             <th scope="col" class="text-center">Estatus</th>
                             <th scope="col" style="width: 5%;">&nbsp;</th>
                         </tr>
                         </thead>
                         <tbody>
-
-                            @foreach($categorias as $categoria)
-                                <th scope="row" class="text-center">{{ $i++ }}</th>
-                                <td>{{ strtoupper($categoria->codigo_categoria) }}</td>
-                                <td>{{ strtoupper($categoria->descripcion_categoria) }}</td>
+                            @if($precios_store)
+                            @foreach($precios_store as $precio)
+                                {{--<th scope="row" class="text-center">{{ $i++ }}</th>--}}
+                                <td>{{ strtoupper($precio->tipo_precio) }}</td>
+                                <td>{{ strtoupper($precio->moneda) }}</td>
+                                <td class="text-right">{{ strtoupper($precio->precio) }}</td>
                                 <td class="text-center">
-                                    @if($categoria->estatus)
+                                    @if($precio->estatus)
                                         <i class="text-success fas fa-check"></i>
                                         @else
                                         <i class="text-danger fas fa-ban"></i>
@@ -42,8 +55,8 @@
                                 </td>
                                 <td class="justify-content-end">
                                     <div class="btn-group">
-                                        @if (leerJson(Auth::user()->permisos, 'categorias.edit') || Auth::user()->role == 100)
-                                            <button wire:click="edit_categoria({{ $categoria->id }})" class="btn btn-info btn-sm">
+                                        @if (leerJson(Auth::user()->permisos, 'precios.edit') || auth()->user()->role == 100)
+                                            <button wire:click="edit_categoria({{ $precio->id }})" class="btn btn-info btn-sm">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                         @else
@@ -54,13 +67,14 @@
                                 </td>
                                 </tr>
                             @endforeach
+                            @endif
                         </tbody>
                     </table>
-                    @include('admin.articulos.'.$view_categoria)
-                </div>--}}
+                    @include('admin.articulos.'.$view_precio)
+                </div>
 
 
-
+                </form>
 
             </div>
             <div class="modal-footer justify-content-end">

@@ -13,7 +13,9 @@
 
         <ul class="nav flex-column">
             <button type="button" class="list-group-item list-group-item-action fondo"
-                    @if($view_articulo != 'create_articulo') data-toggle="modal" data-target="#modal-precios" @endif >
+                    @if($view_articulo != 'create_articulo')
+                    wire:click="show_precios({{ $articulo_id }})"
+                    data-toggle="modal" data-target="#modal-precios" @endif >
                 Precios <span class="float-right badge bg-info">{{--{{ $categorias_count }}--}}</span>
             </button>
             <button type="button" class="list-group-item list-group-item-action fondo"
@@ -31,8 +33,11 @@
 
         </ul>
 
-        @include('admin.articulos.modal_precios')
+        @if($view_articulo != 'create_articulo')
 
+            @include('admin.articulos.modal_precios')
+
+        @endif
 
 
     </div>
